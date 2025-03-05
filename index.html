@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Cálculos de Construcción</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-hard-hat"></i> ConstructCalc Pro</h1>
+            <p>Sistema profesional de cálculos para construcción</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="tabique">
+                <i class="fas fa-th-large"></i>
+                <span>Tabiques</span>
+            </button>
+            <button class="tab-btn" data-tab="colados">
+                <i class="fas fa-cubes"></i>
+                <span>Colados</span>
+            </button>
+            <button class="tab-btn" data-tab="cimbra">
+                <i class="fas fa-border-all"></i>
+                <span>Cimbra</span>
+            </button>
+            <button class="tab-btn" data-tab="escuadra">
+                <i class="fas fa-ruler-combined"></i>
+                <span>Escuadra</span>
+            </button>
+        </div>
+
+        <div class="tab-content active" id="tabique">
+            <div class="content-header">
+                <h2><i class="fas fa-th-large"></i> Cálculo de Tabiques</h2>
+                <p class="description">Calcula la cantidad de piezas y material necesario para construir muros.</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="tipo-tabique">Tipo de Tabique:</label>
+                        <div class="tooltip-container">
+                            <select id="tipo-tabique">
+                                <option value="ladrillo">Ladrillo Rojo</option>
+                                <option value="block">Block de Concreto</option>
+                                <option value="tabicon">Tabicón</option>
+                                <option value="tablaroca">Tablaroca</option>
+                            </select>
+                            <span class="tooltip">Selecciona el material que utilizarás para tu muro</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="largo-muro">Largo del Muro (m):</label>
+                            <div class="tooltip-container">
+                                <input type="number" id="largo-muro" min="0" step="0.01">
+                                <span class="tooltip">Longitud horizontal del muro en metros</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="alto-muro">Alto del Muro (m):</label>
+                            <div class="tooltip-container">
+                                <input type="number" id="alto-muro" min="0" step="0.01">
+                                <span class="tooltip">Altura del muro en metros</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="descuento-areas">Descuento de Áreas (puertas/ventanas):</label>
+                        <button id="agregar-descuento" class="btn-secondary">
+                            <i class="fas fa-plus"></i> Agregar
+                        </button>
+                        <div class="help-text">Agrega las dimensiones de puertas y ventanas para descontarlas del área total</div>
+                    </div>
+                    
+                    <div id="areas-descuento"></div>
+                    
+                    <div class="form-actions">
+                        <button id="calcular-tabique" class="btn-primary">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="results" id="resultados-tabique">
+                <h3><i class="fas fa-clipboard-list"></i> Resultados:</h3>
+                <div class="result-grid">
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fas fa-vector-square"></i>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-label">Área total:</div>
+                            <div class="result-value" id="area-total">0 m²</div>
+                        </div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-label">Cantidad de piezas:</div>
+                            <div class="result-value" id="cantidad-piezas">0</div>
+                        </div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fas fa-toolbox"></i>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-label">Material adicional:</div>
+                            <div class="result-value" id="material-adicional">-</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tabique-visual" id="tabique-visual">
+                    <!-- Visualización del tabique se generará aquí -->
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="colados">
+            <div class="content-header">
+                <h2><i class="fas fa-cubes"></i> Cálculo de Colados</h2>
+                <p class="description">Calcula el volumen de concreto y materiales necesarios para diferentes estructuras.</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="tipo-colado">Tipo de Colado:</label>
+                        <div class="tooltip-container">
+                            <select id="tipo-colado">
+                                <option value="losa">Losa</option>
+                                <option value="columna">Columna</option>
+                                <option value="zapata">Zapata</option>
+                                <option value="cimiento">Cimiento Corrido</option>
+                            </select>
+                            <span class="tooltip">Selecciona el tipo de estructura que deseas colar</span>
+                        </div>
+                    </div>
+                    
+                    <div id="dimensiones-colado">
+                        <!-- Campos dinámicos según el tipo de colado -->
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="resistencia-concreto">Resistencia del Concreto:</label>
+                        <div class="tooltip-container">
+                            <select id="resistencia-concreto">
+                                <option value="f150">f'c = 150 kg/cm²</option>
+                                <option value="f200">f'c = 200 kg/cm²</option>
+                                <option value="f250">f'c = 250 kg/cm²</option>
+                                <option value="f300">f'c = 300 kg/cm²</option>
+                            </select>
+                            <span class="tooltip">Resistencia a la compresión del concreto</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button id="calcular-colado" class="btn-primary">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="results" id="resultados-colado">
+                <h3><i class="fas fa-clipboard-list"></i> Resultados:</h3>
+                <div class="result-grid">
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fas fa-cube"></i>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-label">Volumen de concreto:</div>
+                            <div class="result-value" id="volumen-concreto">0 m³</div>
+                        </div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-label">Cemento:</div>
+                            <div class="result-value" id="cantidad-cemento">0 bultos</div>
+                        </div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fas fa-mountain"></i>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-label">Arena:</div>
+                            <div class="result-value" id="cantidad-arena">0 m³</div>
+                        </div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fas fa-dice"></i>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-label">Grava:</div>
+                            <div class="result-value" id="cantidad-grava">0 m³</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="colado-visual" id="colado-visual">
+                    <!-- Visualización del colado se generará aquí -->
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="cimbra">
+            <div class="content-header">
+                <h2><i class="fas fa-border-all"></i> Cálculo de Cimbra</h2>
+                <p class="description">Calcula el área de contacto y materiales necesarios para cimbra.</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="tipo-cimbra">Tipo de Cimbra:</label>
+                        <div class="tooltip-container">
+                            <select id="tipo-cimbra">
+                                <option value="losa">Losa</option>
+                                <option value="muro">Muro</option>
+                                <option value="columna">Columna</option>
+                            </select>
+                            <span class="tooltip">Selecciona el tipo de estructura a cimbrar</span>
+                        </div>
+                    </div>
+                    
+                    <div id="dimensiones-cimbra">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="largo-cimbra">Largo (m):</label>
+                                <div class="tooltip-container">
+                                    <input type="number" id="largo-cimbra" min="0" step="0.01">
+                                    <span class="tooltip">Longitud en metros</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="ancho-cimbra">Ancho (m):</label>
+                                <div class="tooltip-container">
+                                    <input type="number" id="ancho-cimbra" min="0" step="0.01">
+                                    <span class="tooltip">Ancho en metros</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" id="grupo-alto-cimbra">
+                            <label for="alto-cimbra">Alto (m):</label>
+                            <div class="tooltip-container">
+                                <input type="number" id="alto-cimbra" min="0" step="0.01">
+                                <span class="tooltip">Altura en metros</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button id="calcular-cimbra" class="btn-primary">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="results" id="resultados-cimbra">
+                <h3><i class="fas fa-clipboard-list"></i> Resultados:</h3>
+                <div class="result-grid">
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fas fa-vector-square"></i>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-label">Área de contacto:</div>
+                            <div class="result-value" id="area-contacto">0 m²</div>
+                        </div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fas fa-tree"></i>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-label">Madera requerida:</div>
+                            <div class="result-value" id="madera-requerida">0 pt</div>
+                        </div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fas fa-thumbtack"></i>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-label">Clavos:</div>
+                            <div class="result-value" id="cantidad-clavos">0 kg</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cimbra-visual" id="cimbra-visual">
+                    <!-- Visualización de la cimbra se generará aquí -->
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="escuadra">
+            <div class="content-header">
+                <h2><i class="fas fa-ruler-combined"></i> Cálculo de Escuadra</h2>
+                <p class="description">Calcula y visualiza escuadras para garantizar ángulos rectos en la construcción.</p>
+            </div>
+            
+            <div class="escuadra-container">
+                <div class="card escuadra-inputs">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="metodo-escuadra">Método:</label>
+                            <div class="tooltip-container">
+                                <select id="metodo-escuadra">
+                                    <option value="3-4-5">Método 3-4-5</option>
+                                    <option value="catetos">Por catetos</option>
+                                    <option value="angulo">Por ángulo</option>
+                                </select>
+                                <span class="tooltip">Selecciona el método para calcular la escuadra</span>
+                            </div>
+                        </div>
+                        
+                        <div id="inputs-escuadra">
+                            <!-- Campos dinámicos según el método -->
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button id="calcular-escuadra" class="btn-primary">
+                                <i class="fas fa-calculator"></i> Calcular
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="escuadra-diagram">
+                    <div class="canvas-container">
+                        <canvas id="escuadra-canvas" width="400" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="results" id="resultados-escuadra">
+                <h3><i class="fas fa-clipboard-list"></i> Resultados:</h3>
+                <div class="result-grid">
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fas fa-arrows-alt-h"></i>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-label">Cateto A:</div>
+                            <div class="result-value" id="cateto-a">0 m</div>
+                        </div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fas fa-arrows-alt-v"></i>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-label">Cateto B:</div>
+                            <div class="result-value" id="cateto-b">0 m</div>
+                        </div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fas fa-ruler"></i>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-label">Hipotenusa:</div>
+                            <div class="result-value" id="hipotenusa">0 m</div>
+                        </div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fas fa-drafting-compass"></i>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-label">Ángulo:</div>
+                            <div class="result-value" id="angulo">90°</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="escuadra-instrucciones" id="escuadra-instrucciones">
+                    <!-- Instrucciones para aplicar la escuadra -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-hard-hat"></i> ConstructCalc Pro
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link"><i class="fas fa-book"></i> Manual de Usuario</a>
+                    <a href="#" class="footer-link"><i class="fas fa-question-circle"></i> Ayuda</a>
+                    <a href="#" class="footer-link"><i class="fas fa-envelope"></i> Contacto</a>
+                </div>
+            </div>
+            <p class="copyright">&copy; 2023 ConstructCalc Pro. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
